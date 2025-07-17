@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cool Cats Clicker</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #ffe4e1, #ffdab9);
+      font-family: 'Comic Sans MS', cursive;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      margin-top: 20px;
+    }
+    #cat {
+      width: 200px;
+      cursor: pointer;
+      border-radius: 20px;
+      margin-top: 10px;
+      transition: transform 0.1s;
+    }
+    #cat:active {
+      transform: scale(1.1);
+    }
+    .button {
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      background-color: #ff69b4;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #ff1493;
+    }
+    .shop {
+      margin-top: 30px;
+    }
+    #adModal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.8);
+    }
+    #adModalContent {
+      position: relative;
+      margin: 10% auto;
+      padding: 0;
+      width: 90%;
+      max-width: 400px;
+      background-color: white;
+      border-radius: 10px;
+    }
+    #adModalContent iframe {
+      width: 100%;
+      height: 250px;
+      border-radius: 10px 10px 0 0;
+    }
+    #closeAd {
+      padding: 10px;
+      background: #f44336;
+      color: white;
+      border: none;
+      width: 100%;
+      border-radius: 0 0 10px 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cool Cats Clicker</h1>
+  <p><strong>Catnip:</strong> <span id="score">0</span> 🌿</p>
+  <img id="cat" src="https://placekitten.com/300/300" alt="cat">
+  <div class="shop">
+    <button class="button" onclick="buyUpgrade()">Buy Laser Pointer (50 🌿)</button><br>
+    <button class="button" onclick="buyCat()">Buy Funny Cat (100 🌿)</button><br>
+    <button class="button" onclick="showAd()">💰 Watch Ad to Get 100 🌿</button>
+  </div>
+
+  <div id="adModal">
+    <div id="adModalContent">
+      <iframe src="https://www.youtube.com/embed/OkIKhCYcHSg?autoplay=1&controls=1" allowfullscreen></iframe>
+      <button id="closeAd" onclick="closeAd()">Close Ad</button>
+    </div>
+  </div>
+
+  <audio id="meowSound" src="https://www.fesliyanstudios.com/play-mp3/6689" preload="auto"></audio>
+
+  <script>
+    let score = 0;
+    let multiplier = 1;
+
+    const scoreEl = document.getElementById('score');
+    const meow = document.getElementById('meowSound');
+    const cat = document.getElementById('cat');
+
+    cat.addEventListener('click', () => {
+      score += multiplier;
+      scoreEl.textContent = score;
+      meow.currentTime = 0;
+      meow.play();
+    });
+
+    function buyUpgrade() {
+      if (score >= 50) {
+        score -= 50;
+        multiplier += 1;
+        scoreEl.textContent = score;
+        alert("Upgrade purchased! +1 catnip per click.");
+      } else {
+        alert("Not enough catnip!");
+      }
+    }
+
+    function buyCat() {
+      if (score >= 100) {
+        score -= 100;
+        scoreEl.textContent = score;
+        const newCat = document.createElement('img');
+        newCat.src = "https://placekitten.com/200/200?" + Math.random();
+        newCat.style.width = "100px";
+        newCat.style.margin = "10px";
+        document.body.appendChild(newCat);
+      } else {
+        alert("Not enough catnip!");
+      }
+    }
+
+    function showAd() {
+      document.getElementById('adModal').style.display = 'block';
+    }
+
+    function closeAd() {
+      document.getElementById('adModal').style.display = 'none';
+      score += 100;
+      scoreEl.textContent = score;
+      alert("You received 100 catnip for watching!");
+    }
+  </script>
+</body>
+</html>
